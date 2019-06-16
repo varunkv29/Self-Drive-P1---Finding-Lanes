@@ -1,0 +1,41 @@
+PROJECT 1 - Finding lanes
+
+STEP 1 : building pipeline using helper functions
+
+* image was called and copied
+* image was converted to grayscale
+* grayscale image was smoothened by blur_image function
+* blur image was converted to canny image
+* polynomial image was masked out from original image and combined
+* the region of interest was used to get hough lines 
+* the hough lines function called draw lines function to convert hough lines into lianes on image
+* the result image was combined with the original image to get the desired lanes
+
+IMAGE : 
+
+However it was observed that in the images and the videos the output lanes was not a single fully developed lanes
+To fix this, new draw line functions were created 
+
+STEP 2 : To get a fully developed single lanes
+
+I created 2 functions to draw lines - draw_lines2 and draw_lines3 
+draw lines2 : * this function creates lines based on the slope and intercept 
+              * The lines were classified into left and right based on their slopes > or < 0
+              * the averages of slopes and intercept of lines was taken
+              * Then lines were drawn from bottom of image to mid image using the average of all slopes and intercept
+              
+draw_lines3 : * This function draws lines by extending the lines 
+              * the lines were classified based on their slopes > or < 0 
+              * the average of the lines itself was taken
+              * the line was drawn by extending the lines downwards 
+
+IMAGE : https://view54dc5dc0.udacity-student-workspaces.com/files/CarND-LaneLines-P1/test_images/solidWhiteCurve.jpg
+
+SHORTCMINGS: Both the functions worked fine on all images and the second video (solidYellowLeft.mp4)
+
+             * There was a problem in the first video - solidWhiteRight.mp4
+             * This was observed in both the draw_line functions 
+             * Both the functions works for 0 - 2 seconds and 4 - 8 seconds , it only fails at 3rd second
+From the video for the basic default draw_lins function ,I observed that at time = 3 sec the pipeline fails to define any line on the left, which was not a problem for the default function given as it woul skip and show no lane on the left at that time.
+But in the modified draw_line functiuons it can not be skipped due to the code and thus it fails at for that time = 3.
+
